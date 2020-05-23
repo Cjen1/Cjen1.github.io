@@ -1,0 +1,6 @@
+_cache
+site
+**.o
+**.lock
+.stack-work
+**.hi

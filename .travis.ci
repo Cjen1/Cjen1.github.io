@@ -1,0 +1,25 @@
+language: haskell
+branches:
+  only:
+    - source
+env:
+  global:
+    - secure: "TbjjAkmM6jp55jK4BFy7R7e6PcLYNqzsrnozymu3TlJPeEYWn4UUvVn5OgQlVo3TsmxsDv/ChSMeMNYpGFdijvNzxUYgqUpigDu7G7/+1VMAnDle1xArCKaePrM1cX3yLy9jOk1qy4JNJE0ANBvpn2r/eDtCGMwutWZCAz5MYaCVEc20VZzIYrojA8M6z4rRfxRdohplQOhJ+YB44kAuODnu2JnIpYq1L/7dkp4DSEWe1fodd3Z9U1QMwXXL1TRpmrII8U9eKZhYgymekWrUaWXTB2UPXm2bY1RQy9Yuwac+4PZrRimVPiKyBPJbIZmn0xW5R6wh5BpEGO9efnu9xXI10lztYOQiQj8VF3f3pFIYstqMWwf2aZt8zIGJoBM7ty3YvQf3H51+RBzr5j1ejEa1Mcl1Q7UmzRAzmgB/xuuQ7sBxgZfA5V5eiSf2kdEFs7/r+0LR/HXjiPa7U6m8XqXaj/SNceNXW0SwZNWPJ6fyaoaoWkNEO77BV9R4C7RS3paEOvSvv5dX9IPSVZ9J2cqNS/P1qZHqYQdgVJ+/ZDLOeEFH9dKvdO3aVjq2RYaYbB+uhFGI/+Tb4zDui5SMUmey9+SWySLqnn10e3iSoLEb5a10S30fVmZTS8uvsEY+qxhnd2QE0+hnfjp/XOcOXgAHbByJDbPZCwO0mpFzr2A="
+install:
+  - cabal install hakyll
+  - ghc --make site.hs
+before_script:
+  - cd _site
+  - git checkout master
+  - git pull origin master
+  - cd ..
+script: ./site build
+after_script:
+  - cd _site
+  - git status
+  - git add --all
+  - git config --global user.email "your@mailaddress.com"
+  - git config --global user.name "Travis"
+  - git commit -m "snapshot $(date '+%m/%d/%y %H:%M')"
+  - git push "$REPO_URL" master | grep -v http
+  - cd ..
