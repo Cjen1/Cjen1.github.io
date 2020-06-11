@@ -8,7 +8,7 @@ N [
     N [
       N [
         L "Brown",
-        N [L "onions", "100.0"] "ing"
+        N [L "onions", L "100.0"] "ing"
       ] "process",
       N [L "garlic", L "5.0"] "ing"
     ] "process",
