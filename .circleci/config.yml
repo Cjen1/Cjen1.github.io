@@ -16,7 +16,7 @@ jobs:
             - v1-stack-work-{{ checksum "package.yaml" }}
       - run:
           name: Build the static site generator executable
-          command: stack build
+          command: stack build --install-ghc
       - save_cache:
           key: v1-stack-work-{{ checksum "package.yaml" }}
           paths:
