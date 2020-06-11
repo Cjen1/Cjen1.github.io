@@ -6,6 +6,9 @@ jobs:
       - image: cjen1/hakyll:4.12.5.1
     working_directory: ~/repo
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "e4:06:c0:ec:11:78:f9:17:c8:f3:88:b7:58:fd:1e:85"
       - checkout
       - run: 
           name: Checkout submodule
