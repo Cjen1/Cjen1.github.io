@@ -7,6 +7,12 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
+      - run: 
+          name: Checkout submodule
+          command: |
+            git submodule update --init
+            cd _site
+            git checkout master
       - restore_cache:
           keys:
             - v1-stack-work-{{ checksum "package.yaml" }}
@@ -21,23 +27,11 @@ jobs:
       - run:
           name: Build the site
           command: stack run build
-
-  site-deploy:
-    docker:
-      - image: alpine/git
-    steps:
-      - checkout
       - run:
           name: Setup git config
           command: |
             git config --global user.email "cjj39@cam.ac.uk"
             git config --global user.name "Cjen1"
-      - run: 
-          name: Checkout submodule
-          command: |
-            git submodule update --init
-            cd _site
-            git checkout master
       - run:
           name: Git commit and push
           command: |
