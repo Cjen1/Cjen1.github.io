@@ -47,7 +47,7 @@ workflows:
   build:
   jobs:
     - site-build
-    - site-deploy
+    - site-deploy:
         requires:
           - site-build
         filters:
