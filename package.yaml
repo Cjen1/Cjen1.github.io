@@ -1,12 +1,6 @@
-name:                jentek-dev
-version:             0.1.0.0
-homepage:            https://github.com/Cjen1/cook#readme
-license:             BSD3
-license-file:        LICENSE
+name:                JentekDev
 author:              Chris Jensen
 maintainer:          cjj39@cam.ac.uk
-copyright:           2020 Chris Jensen
-category:            Web
 
 default-extensions:
  - ApplicativeDo
@@ -44,13 +38,19 @@ default-extensions:
  - TypeFamilyDependencies
  - TypeOperators
 
-executable:
-  source-dirs:  src
-  main:         main.hs
-  other-modules:
-   - Cook
-   - Utils
-  dependencies:
-   - base
-   - hakyll
-   - typelits-printf
+dependencies:
+ - base
+ - hakyll
+ - typelits-printf
+
+library:
+  source-dirs: lib/
+
+executables:
+  site-exe:
+    main:         Site.hs
+    source-dirs:  . 
+    dependencies:
+     - base
+     - hakyll
+     - JentekDev

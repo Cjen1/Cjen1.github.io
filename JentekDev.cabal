@@ -1,0 +1,43 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.33.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 236995013ebfaf3b7c9a3884255d6e1076579a3ddb1d435edf7c43ef183d91f2
+
+name:           JentekDev
+version:        0.0.0
+author:         Chris Jensen
+maintainer:     cjj39@cam.ac.uk
+license-file:   LICENSE
+build-type:     Simple
+
+library
+  exposed-modules:
+      Cook
+      Utils
+  other-modules:
+      Paths_JentekDev
+  hs-source-dirs:
+      lib/
+  default-extensions: ApplicativeDo BangPatterns DataKinds DefaultSignatures DeriveFoldable DeriveFunctor DeriveGeneric DeriveLift DeriveTraversable DerivingStrategies EmptyCase ExistentialQuantification FlexibleContexts FlexibleInstances FunctionalDependencies GADTs GeneralizedNewtypeDeriving InstanceSigs KindSignatures LambdaCase MultiParamTypeClasses MultiWayIf NamedFieldPuns OverloadedStrings PatternSynonyms RankNTypes ScopedTypeVariables StandaloneDeriving TupleSections TypeApplications TypeFamilies TypeFamilyDependencies TypeOperators
+  build-depends:
+      base
+    , hakyll
+    , typelits-printf
+  default-language: Haskell2010
+
+executable site-exe
+  main-is: Site.hs
+  other-modules:
+      Paths_JentekDev
+  hs-source-dirs:
+      ./.
+  default-extensions: ApplicativeDo BangPatterns DataKinds DefaultSignatures DeriveFoldable DeriveFunctor DeriveGeneric DeriveLift DeriveTraversable DerivingStrategies EmptyCase ExistentialQuantification FlexibleContexts FlexibleInstances FunctionalDependencies GADTs GeneralizedNewtypeDeriving InstanceSigs KindSignatures LambdaCase MultiParamTypeClasses MultiWayIf NamedFieldPuns OverloadedStrings PatternSynonyms RankNTypes ScopedTypeVariables StandaloneDeriving TupleSections TypeApplications TypeFamilies TypeFamilyDependencies TypeOperators
+  build-depends:
+      JentekDev
+    , base
+    , hakyll
+    , typelits-printf
+  default-language: Haskell2010
