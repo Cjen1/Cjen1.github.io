@@ -1,8 +1,0 @@
-resolver: lts-15.6
-packages:
-  - .
-
-extra-deps:
-  - hakyll-4.13.3.0
-  - typelits-printf-0.2.0.0
-  - symbols-0.3.0.0
