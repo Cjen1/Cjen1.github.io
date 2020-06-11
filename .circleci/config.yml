@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   site-build:
     docker:
-      - image: haskell:latest
+      - image: cjen1/hakyll:4.12.5.1
     working_directory: ~/repo
     environment:
       BRANCH: master
