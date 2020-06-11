@@ -32,6 +32,12 @@ jobs:
           command: |
             git config --global user.email "cjj39@cam.ac.uk"
             git config --global user.name "Cjen1"
+      - run: 
+          name: Checkout submodule
+          command: |
+            git submodule update --init
+            cd _site
+            git checkout master
       - run:
           name: Git commit and push
           command: |
