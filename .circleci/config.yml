@@ -1,0 +1,59 @@
+# Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
+version: 2.1
+jobs:
+  site-build:
+    docker:
+      - image: futtetennista/hakyll:latest
+    working_directory: ~/repo
+    environment:
+      BRANCH: master
+      TARGET_REPO: cjen1/cjen1-github-io.git
+      HAKYLL_OUTPUT_FOLDER: _site
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-stack-work-{{ checksum "package.yaml" }}
+      - run:
+          name: Build the static site generator executable
+          command: stack build
+      - save_cache:
+          key: v1-stack-work-{{ checksum "package.yaml" }}
+          paths:
+            - ~/cjen1-github-io/.stack-work
+            - ~/.stack
+      - run:
+          name: Build the site
+          command: stack run rebuild
+  site-deploy:
+    docker:
+      - image: node:8.10.0
+    steps:
+      - checkout
+      - attach_workspace:
+          at: docs/_build
+      - run:
+          name: Install and configure dependencies
+          command: |
+            npm install -g --silent gh-pages@2.0.1
+            git config user.email "ci-build@klukas.net"
+            git config user.name "ci-build"
+      - run:
+          name: Deploy docs to gh-pages branch
+          command: gh-pages --dist docs/_build/html
+
+workflows:
+  version: 2.1
+  build:
+  jobs:
+    - site-build
+    - site-deploy
+      requires:
+        - site-build
+      filters:
+        branches:
+          only: master
+
+
+
+          
