@@ -44,10 +44,7 @@ workflows:
   version: 2.1
   build:
     jobs:
-      - site-build
-      - site-deploy:
-          requires:
-            - site-build
+      - site-build:
           filters:
             branches:
-              only: src
+              only:src
