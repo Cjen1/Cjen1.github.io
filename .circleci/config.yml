@@ -28,8 +28,13 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Install prereqs
+          command: sudo apt install git
+      - run:
           name: Setup git config
-          command: git config --gloabl user.email "cjj39@cam.ac.uk" && git config --global user.name "Cjen1"
+          command: |
+          git config --gloabl user.email "cjj39@cam.ac.uk"
+          git config --global user.name "Cjen1"
       - run:
           name: Git commit and push
           command: |
