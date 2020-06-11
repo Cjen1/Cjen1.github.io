@@ -1,0 +1,18 @@
+---
+title: Carrot and potato soup
+---
+N [
+  L "Blitz until sufficiently smooth (or not smooth)",
+  N [
+    L "Simmer until the carrots are soft",
+    N [
+      N [
+        L "Brown",
+        N [L "onions", "100.0"] "ing"
+      ] "process",
+      N [L "garlic", L "5.0"] "ing"
+    ] "process",
+    N [L "carrots", L "500.0"] "ing",
+    N [L "potatoes",  L "500.0"] "ing"
+  ] "process"
+] "process"
