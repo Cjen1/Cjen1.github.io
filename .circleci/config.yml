@@ -48,8 +48,8 @@ workflows:
   jobs:
     - site-build
     - site-deploy
-      requires:
-        - site-build
-      filters:
-        branches:
-          only: master
+        requires:
+          - site-build
+        filters:
+          branches:
+            only: master
