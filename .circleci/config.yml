@@ -23,6 +23,8 @@ jobs:
           command: stack run rebuild
 
   site-deploy:
+    docker:
+      - image: ubuntu
     steps:
       - checkout
       - run:
