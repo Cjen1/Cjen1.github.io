@@ -24,12 +24,9 @@ jobs:
 
   site-deploy:
     docker:
-      - image: ubuntu
+      - image: alpine/git
     steps:
       - checkout
-      - run:
-          name: Install prereqs
-          command: apt install git
       - run:
           name: Setup git config
           command: |
