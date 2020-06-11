@@ -45,11 +45,11 @@ jobs:
 workflows:
   version: 2.1
   build:
-  jobs:
-    - site-build
-    - site-deploy:
-        requires:
-          - site-build
-        filters:
-          branches:
-            only: master
+    jobs:
+      - site-build
+      - site-deploy:
+          requires:
+            - site-build
+          filters:
+            branches:
+              only: master
