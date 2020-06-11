@@ -1,0 +1,56 @@
+name:                jentek-dev
+version:             0.1.0.0
+homepage:            https://github.com/Cjen1/cook#readme
+license:             BSD3
+license-file:        LICENSE
+author:              Chris Jensen
+maintainer:          cjj39@cam.ac.uk
+copyright:           2020 Chris Jensen
+category:            Web
+
+default-extensions:
+ - ApplicativeDo
+ - BangPatterns
+# - ContraintKinds
+ - DataKinds
+ - DefaultSignatures
+ - DeriveFoldable
+ - DeriveFunctor
+ - DeriveGeneric
+ - DeriveLift
+ - DeriveTraversable
+ - DerivingStrategies
+ - EmptyCase
+ - ExistentialQuantification
+ - FlexibleContexts
+ - FlexibleInstances
+ - FunctionalDependencies
+ - GADTs
+ - GeneralizedNewtypeDeriving
+ - InstanceSigs
+ - KindSignatures
+ - LambdaCase
+ - MultiParamTypeClasses
+ - MultiWayIf
+ - NamedFieldPuns
+ - OverloadedStrings
+ - PatternSynonyms
+ - RankNTypes
+ - ScopedTypeVariables
+ - StandaloneDeriving
+ - TupleSections
+ - TypeApplications
+ - TypeFamilies
+ - TypeFamilyDependencies
+ - TypeOperators
+
+executable:
+  source-dirs:  src
+  main:         main.hs
+  other-modules:
+   - Cook
+   - Utils
+  dependencies:
+   - base
+   - hakyll
+   - typelits-printf
