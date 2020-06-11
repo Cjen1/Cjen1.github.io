@@ -5,10 +5,6 @@ jobs:
     docker:
       - image: cjen1/hakyll:4.12.5.1
     working_directory: ~/repo
-    environment:
-      BRANCH: master
-      TARGET_REPO: cjen1/cjen1-github-io.git
-      HAKYLL_OUTPUT_FOLDER: _site
     steps:
       - checkout
       - restore_cache:
@@ -25,22 +21,20 @@ jobs:
       - run:
           name: Build the site
           command: stack run rebuild
+
   site-deploy:
-    docker:
-      - image: node:8.10.0
     steps:
       - checkout
-      - attach_workspace:
-          at: docs/_build
       - run:
-          name: Install and configure dependencies
+          name: Setup git config
+          command: git config --gloabl user.email "cjj39@cam.ac.uk" && git config --global user.name "Cjen1"
+      - run:
+          name: Git commit and push
           command: |
-            npm install -g --silent gh-pages@2.0.1
-            git config user.email "ci-build@klukas.net"
-            git config user.name "ci-build"
-      - run:
-          name: Deploy docs to gh-pages branch
-          command: gh-pages --dist docs/_build/html
+            cd _site
+            git add --all 
+            git commit -m "snapshot "snapshot $(date '+%m/%d/%y %H:%M')"
+            git push -f "$CIRCLE_REPOSITORY_URL" master | grep -v http
 
 workflows:
   version: 2.1
