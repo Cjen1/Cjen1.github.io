@@ -1,0 +1,39 @@
+---
+title: I4: Incremental inference of inductive inivariants for verification of distributed protocols
+author: Cjen1 (Chris Jensen)
+---
+
+## Overview
+
+This paper investigates ways to reduce the cost of formally verifying protocols. Specifically it highlights that when verifying systems, there thens to be two phases, the first is verifying the protocol by finding inductive invariants. The second phase is proving that the code implements the protocol.
+
+They claim that the second phase is relatively easy and that it is the first phase which is the difficult part:
+
+```
+when they attempted to find the inductive invariant of [the Paxos protocol] the required effort was on the order of months
+```
+
+Hence this paper focuses on automating the discovery of inductive invariants.
+
+There have been several systems which have attempted similar things, the most notable of these being Ivy. Ivy works by taking a starting invariant and iteratively producing minimised counterexamples until the infinite invariant is found.
+
+The key idea for I4 is rather than finding the inductive invariant for the infinite version of the protocol directly (for example with a lock server having `c` clients) you can relatively easily generate an invariant for a finite domain (for example two clients) and then generalise to the infinite one.
+
+The key issue then is finding a sufficiently large finite domain which encompasses all behaviors which are relevant to the final invariant while not exceeding the computation time and more importantly memory of the model checker.
+
+To use a concrete example: if we want to prove that a locking protocol will not permit more than one client to hold a lock at a given time, we can could start with a single server and client. The issue is that the safety property is trivially always true in this case and hence we can't derive the generalised invariant. Thus we weaken the assumption that there is a single client to having two clients which should expose all interesting behaviors.
+
+Their specific workflow for I4 is as follows:
+  1. Write out desired safety property and system model.
+  2. Feed the model and property into a model checker for finite (small) domains.
+  3. Generate small invariant using Ivy. 
+  4. Remove finite boundaries on domains applied in step 2.
+  5. Iteratively use Ivy to generate a generalised version of the invariant, expanding the domains as required.
+
+## Conclusion
+
+Overall this paper is very exciting and provides a relatively simple way to verify complex protocols in an automated fashion without requiring substantial intimate knowledge of the protocols themselves. Thus this opens the door to engineers optimising protocols for their specific purpose while still being able to verify the resultant system.
+
+That being said the system is currently limited by the size of the domains it can check, however the authors note that by using a different style of model checker they may be able to partially resolve this.
+
+One final thought on this limit is that fundamentally we will always be limited in man power and effort of the complexity of systems that we can verify, all that matters is whether useful work can be done using it.
