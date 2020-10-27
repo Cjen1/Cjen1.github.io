@@ -1,5 +1,5 @@
 ---
-title: I4: Incremental inference of inductive inivariants for verification of distributed protocols
+title: "I4: Incremental inference of inductive inivariants for verification of distributed protocols"
 author: Cjen1 (Chris Jensen)
 ---
 
