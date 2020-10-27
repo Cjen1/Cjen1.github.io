@@ -10,7 +10,8 @@ This paper investigates ways to reduce the cost of formally verifying protocols.
 They claim that the second phase is relatively easy and that it is the first phase which is the difficult part:
 
 ```
-when they attempted to find the inductive invariant of [the Paxos protocol] the required effort was on the order of months
+when they attempted to find the inductive invariant of [Paxos]
+the required effort was on the order of months
 ```
 
 Hence this paper focuses on automating the discovery of inductive invariants.
@@ -24,11 +25,12 @@ The key issue then is finding a sufficiently large finite domain which encompass
 To use a concrete example: if we want to prove that a locking protocol will not permit more than one client to hold a lock at a given time, we can could start with a single server and client. The issue is that the safety property is trivially always true in this case and hence we can't derive the generalised invariant. Thus we weaken the assumption that there is a single client to having two clients which should expose all interesting behaviors.
 
 Their specific workflow for I4 is as follows:
-  1. Write out desired safety property and system model.
-  2. Feed the model and property into a model checker for finite (small) domains.
-  3. Generate small invariant using Ivy. 
-  4. Remove finite boundaries on domains applied in step 2.
-  5. Iteratively use Ivy to generate a generalised version of the invariant, expanding the domains as required.
+
+1. Write out desired safety property and system model.
+2. Feed the model and property into a model checker for finite (small) domains.
+3. Generate small invariant using Ivy. 
+4. Remove finite boundaries on domains applied in step 2.
+5. Iteratively use Ivy to generate a generalised version of the invariant, expanding the domains as required.
 
 ## Conclusion
 
