@@ -46,3 +46,21 @@
 	location = {Santa Barbara, CA, USA},
 	series = {PLDI '16}
 }
+
+@inproceedings{wilcox2015verdi,
+	author = {Wilcox, James R. and Woos, Doug and Panchekha, Pavel and Tatlock, Zachary and Wang, Xi and Ernst, Michael D. and Anderson, Thomas},
+	title = {Verdi: A Framework for Implementing and Formally Verifying Distributed Systems},
+	year = {2015},
+	isbn = {9781450334686},
+	publisher = {Association for Computing Machinery},
+	address = {New York, NY, USA},
+	url = {https://doi.org/10.1145/2737924.2737958},
+	doi = {10.1145/2737924.2737958},
+	abstract = { Distributed systems are difficult to implement correctly because they must handle both concurrency and failures: machines may crash at arbitrary points and networks may reorder, drop, or duplicate packets. Further, their behavior is often too complex to permit exhaustive testing. Bugs in these systems have led to the loss of critical data and unacceptable service outages. We present Verdi, a framework for implementing and formally verifying distributed systems in Coq. Verdi formalizes various network semantics with different faults, and the developer chooses the most appropriate fault model when verifying their implementation. Furthermore, Verdi eases the verification burden by enabling the developer to first verify their system under an idealized fault model, then transfer the resulting correctness guarantees to a more realistic fault model without any additional proof burden. To demonstrate Verdi's utility, we present the first mechanically checked proof of linearizability of the Raft state machine replication algorithm, as well as verified implementations of a primary-backup replication system and a key-value store. These verified systems provide similar performance to unverified equivalents. },
+	booktitle = {Proceedings of the 36th ACM SIGPLAN Conference on Programming Language Design and Implementation},
+	pages = {357–368},
+	numpages = {12},
+	keywords = {Verdi, distributed systems, proof assistants, Coq, Formal verification},
+	location = {Portland, OR, USA},
+	series = {PLDI '15}
+}

@@ -1,0 +1,40 @@
+---
+title: "Verdi: A Framework for Implementing and Formally Verifying Distributed Systems"
+author: Cjen1 (Chris Jensen)
+---
+
+# Overview
+
+Compared to more traditional methods of formally verifying systems, this paper [@wilcox2015verdi] proposes a novel approach: compile a simple implementation into one which works in more difficult situations.
+
+For example you could write a simple lock server spec, presuming that there is only a single node, reliable communication and faultless execution; before converting it into a multi-node lock server which can work on real networks on servers which can crash at random.
+
+The way this is done is via a series of verified transformers.
+
+The one of the simplest transformers is one which goes from reliable messaging to allowing out of order receipt of messages. Here to every message you attach a sequence number and then you only deliver a message to the state machine whenever the sequence number that is received is the next in the sequence from that node.
+
+The cool part about verdi is that the proof load is eased by allowing the user to verify their protocol using a simplified system model, while for the rest of the extraction to the desired system model, the implementation and proof is automatic.
+
+Some of the transformers that they presented were:
+ - Crash-Fault tolerance
+ - Replication to multiple servers via a Raft state machine replication
+ - Out-of-order messages
+ - Duplicating messages
+ - Dropped messages
+
+The most interesting of these is the Raft transformer.
+This essentially uses Raft to maintain the list of messages which need to be applied and to then apply them to the single node state machine.
+
+# Conclusions
+
+Overall the prospect of implementing and verifying a system under a relatively simple system model before extracting it into a complex and difficult real world system model is extremely attractive.
+That being said I have several concerns about this approach.
+
+The first is the difference between this and just a bunch of libraries.
+If for example you had a stack of libraries providing verified messaging or state machine replication, which either you call into, or you pass the state machine into respectively that should be pretty similar in terms of proof load.
+That being said most libraries which expose this kind of interface are either relatively constraining on the implementation or require a kind of onion/stack-like approach to layering your libraries, so being able to easily slot your implementation into and out of the stack is quite attractive.
+Additionally this approach lends itself to the potential for optimising transformers, for example one which batches requests to reduce fsync's etc, which would also be quite cool!
+
+My second concern is regarding the evaluation with etcd. They are reporting figures which have much to high latency and much too low throughput to be realistic. This exposes the concern regarding the efficiency of the system: is it cpu bound, or is the IO killing the performance. From similar tests I've done in the past that is a realistic figure if you are running etcd on a spinning disk where write the main cost was how long an fsync to disk took. In that case the evaluation unfortunately just shows that verdi just does the same number of fsync's per request.
+
+In conclusion the system is super cool and proposes a future where verification of systems is simple and easy (with some of the cost being pushed onto the library developer rather than the programmer), which is a massively exciting prospect!
