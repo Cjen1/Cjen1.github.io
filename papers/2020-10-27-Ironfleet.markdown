@@ -5,9 +5,9 @@ author: Cjen1 (Chris Jensen)
 
 ## Overview
 
-Today I'm looking at the Ironfleet paper by Hawblitzel, Howell et. al.
+Today I'm looking at the Ironfleet paper by Hawblitzel, Howell et. al [@hawblitzel2015ironfleet].
 
-This paper primarily presents a series of techniques which make verifying systems easier, a summary of the techniques follows:
+This paper primarily presents and highlights a series of techniques which make verifying systems easier, a summary of the techniques follows:
 
 1. State Machine Refinement: showing that a low level (L) spec refines a high level (H) spec, ie for every sequence of states in L there is an equivilent correct sequence of behaviors in H.
 
