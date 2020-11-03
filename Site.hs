@@ -6,6 +6,14 @@ import           Hakyll
 --------------------------------------------------------------------------------
 import           Cook
 --------------------------------------------------------------------------------
+papersCompiler :: Compiler (Item String)
+papersCompiler = do
+  csl <- load "papers/acm_citation_style.csl"
+  bib <- load "papers/biblio.bib"
+  getResourceBody
+    >>= readPandocBiblio defaultHakyllReaderOptions csl bib
+    >>= return . writePandoc
+    
 main :: IO ()
 main = hakyll $ do
     match "recipes/*" $ do
@@ -51,7 +59,7 @@ main = hakyll $ do
 
     match "papers/*.markdown" $ do
         route $ setExtension "html"
-        compile $ pandocCompiler
+        compile $ papersCompiler
             >>= loadAndApplyTemplate "templates/post.html"    postCtx
             >>= loadAndApplyTemplate "templates/default.html" postCtx
             >>= relativizeUrls
