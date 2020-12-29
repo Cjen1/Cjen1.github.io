@@ -32,7 +32,7 @@
     </section>
     <section>
         <h2 id="overview">Overview</h2>
-<p>Today I’m looking at the Ironfleet paper by Hawblitzel, Howell et. al <span class="citation" data-cites="hawblitzel2015ironfleet">[@hawblitzel2015ironfleet]</span>.</p>
+<p>Today I’m looking at the Ironfleet paper by Hawblitzel, Howell et. al.<span class="citation" data-cites="hawblitzel2015ironfleet"><sup>1</sup></span></p>
 <p>This paper primarily presents and highlights a series of techniques which make verifying systems easier, a summary of the techniques follows:</p>
 <ol type="1">
 <li><p>State Machine Refinement: showing that a low level (L) spec refines a high level (H) spec, ie for every sequence of states in L there is an equivilent correct sequence of behaviors in H.</p></li>
@@ -61,6 +61,11 @@
 <p>As an overarching design though the idea seems to be to reduce the trust component from a multiple thousand lines of code codebase, to ~80 lines of the spec. Thus a consumer just has to trust/verify that the spec is what they desire and then they can have complete trust in the system.</p>
 <p>There does seem to be some tradeoff in terms of performance, however that could also be attributed to the quantity of development time difference between systems.</p>
 <p>Additionally their plot of throughput against latency is very nice, especially the interpolation between points, showing the characteristic curve of throughput initially descreasing after its peak due to contention rising.</p>
+<div id="refs" class="references" role="doc-bibliography">
+<div id="ref-hawblitzel2015ironfleet">
+<p>1. Hawblitzel, C. <em>et al.</em> IronFleet: Proving Practical Distributed Systems Correct. in <em>Proceedings of the ACM Symposium on Operating Systems Principles (SOSP)</em> (ACM - Association for Computing Machinery, 2015).</p>
+</div>
+</div>
     </section>
 </article>
 
