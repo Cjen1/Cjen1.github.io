@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/idb@7/build/umd-with-async-ittr.js"></script>
+  <title>Progress Tracker</title>
+</head>
+<body>
+  <table id="trackers">
+    <tr>
+      <td>Eat nice food</td>
+      <td><input type="checkbox"></td>
+    </tr>
+    <tr>
+      <td>Solve interesting problem</td>
+      <td><input type="checkbox"></td>
+    </tr>
+  </table>
+
+  <button onclick="doSeed()">seed</button>
+
+  <button onclick="submit()">submit</button>
+
+  <button onclick="view()">view</button>
+
+
+  <table>
+    <thead>
+      <td>Activity</td>
+      <td>week</td>
+      <td>month</td>
+      <td>year</td>
+    </thead>
+    <tbody id="results">
+    </tbody>
+
+  </table>
+
+  <script>
+    const dbPromise = idb.openDB('tracker_data', 1, {
+      upgrade(db) {
+        const data = db.createObjectStore('data', {autoIncrement: true});
+        data.createIndex('by-date', 'date', {unique:true});
+      },
+    });
+
+    async function submit() {
+      const tbl = document.getElementById("trackers");
+
+      let data = [];
+
+      for (const row of tbl.rows) {
+        let title = row.cells[0].textContent;
+        let value = row.querySelector("input[type='checkbox']").checked;
+        data.push({title, value});
+      }
+
+      const date = new Date();
+
+      const db = await dbPromise;
+      await db.add('data', {date,data})
+
+      // Display a success message
+      alert("Form submitted successfully!");
+    };
+
+    async function doSeed() {
+        let db = await dbPromise;
+
+        var now = new Date();
+        let foo = [{
+          title: "Eat nice food",
+          value: true,
+        },{
+          title: "Solve interesting problem",
+          value: true,
+        }
+        ];
+        let bar = [{
+          title: "Eat nice food",
+          value: false,
+        },{
+          title: "Solve interesting problem",
+          value: false,
+        }
+        ];
+
+        for(var i=0; i<500; i++) {
+            var thisDate = new Date();
+            thisDate.setDate(now.getDate() - i);
+            const cond = (i/3 % 2 > 1) ^ (i / 7 % 2 > 1) ^ (i / 30 % 2 > 1);
+            if (i % 23 > 5) {
+              db.add('data', {date:thisDate, data: cond ? foo : bar});
+            }
+        }
+    }
+
+    async function getDateRange(days) {
+      let db = await dbPromise;
+      let upper = new Date();
+      let lower = new Date();
+      lower.setDate(upper.getDate() - days);
+
+      let range = IDBKeyRange.bound(lower,upper);
+      const tx = db.transaction('data', "readonly");
+      const index = tx.objectStore("data").index("by-date");
+
+      let agg = {}
+
+      for await (const cursor of index.iterate(range)) {
+        let data = cursor.value.data;
+        for (const datum of data) {
+          const title = datum.title;
+          const value = datum.value;
+          console.log(value);
+
+          if (!agg.hasOwnProperty(title)) {
+            agg[title] = {count : 0, num_checked : 0};
+          }
+
+          agg[title].count += 1;
+          agg[title].num_checked += value ? 1 : 0;
+        }
+      }
+
+      let result = {};
+      for (const title in agg) {
+        result[title] = (agg[title].num_checked / agg[title].count).toFixed(2) * 100.0;
+      }
+
+      return result;
+    }
+
+    async function view() {
+      const week_result = await getDateRange(7);
+      const month_result = await getDateRange(30);
+      const year_result = await getDateRange(365);
+
+      const rtbl = document.getElementById("results");
+      rtbl.innerHTML = "";
+      for (const title in week_result) {
+        const tr = document.createElement("tr");
+        const tdTitle = document.createElement("td");
+        tdTitle.textContent = title;
+        const tdWeek = document.createElement("td");
+        tdWeek.textContent = week_result[title] + "%";
+        const tdMonth = document.createElement("td");
+        tdMonth.textContent = month_result[title] + "%";
+        const tdYear = document.createElement("td");
+        tdYear.textContent = year_result[title] + "%";
+
+        tr.appendChild(tdTitle);
+        tr.appendChild(tdWeek);
+        tr.appendChild(tdMonth);
+        tr.appendChild(tdYear);
+
+        rtbl.appendChild(tr);
+      }
+    }
+
+  </script>
+</body>
+</html>
