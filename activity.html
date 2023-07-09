@@ -2,39 +2,52 @@
 <html>
 <head>
   <script src="https://cdn.jsdelivr.net/npm/idb@7/build/umd-with-async-ittr.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
   <title>Progress Tracker</title>
 </head>
 <body>
-  <table id="trackers">
-    <tr>
-      <td>Eat nice food</td>
-      <td><input type="checkbox"></td>
-    </tr>
-    <tr>
-      <td>Solve interesting problem</td>
-      <td><input type="checkbox"></td>
-    </tr>
-  </table>
+  <div class="container">
+    <table id="trackers">
+      <tr>
+        <td>Time with friends</td>
+        <td><input type="checkbox"></td>
+      </tr>
+      <tr>
+        <td>Activity with S/O</td>
+        <td><input type="checkbox"></td>
+      </tr>
+      <tr>
+        <td>Solve interesting problem</td>
+        <td><input type="checkbox"></td>
+      </tr>
+      <tr>
+        <td>Exercise</td>
+        <td><input type="checkbox"></td>
+      </tr>
+      <tr>
+        <td>Eat nice food</td>
+        <td><input type="checkbox"></td>
+      </tr>
+    </table>
 
-  <button onclick="doSeed()">seed</button>
+    <button type="button" class="btn btn-primary" onclick="submit(); view()">submit</button>
 
-  <button onclick="submit()">submit</button>
+    <table>
+      <thead>
+        <td>Activity</td>
+        <td>week</td>
+        <td>month</td>
+        <td>year</td>
+      </thead>
+      <tbody id="results">
+      </tbody>
 
-  <button onclick="view()">view</button>
+    </table>
+  </div>
 
-
-  <table>
-    <thead>
-      <td>Activity</td>
-      <td>week</td>
-      <td>month</td>
-      <td>year</td>
-    </thead>
-    <tbody id="results">
-    </tbody>
-
-  </table>
-
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
   <script>
     const dbPromise = idb.openDB('tracker_data', 1, {
       upgrade(db) {
@@ -55,44 +68,26 @@
       }
 
       const date = new Date();
+      //date.setHours(date.getDate() - 10);
 
       const db = await dbPromise;
-      await db.add('data', {date,data})
+      // remove all other from within 20 hours => approx 1 per day
+      const lower = new Date();
+      lower.setHours(date.getHours() - 20);
+      let range = IDBKeyRange.bound(lower, date);
+      const tx = db.transaction('data','readwrite');
+      const index = tx.store.index("by-date");
+      console.log(lower, date);
+      for await (const cursor of index.iterate(range)) {
+        console.log(cursor.value.date);
+        cursor.delete();
+      }
+      tx.store.add({date, data});
+      await tx.done;
 
       // Display a success message
       alert("Form submitted successfully!");
     };
-
-    async function doSeed() {
-        let db = await dbPromise;
-
-        var now = new Date();
-        let foo = [{
-          title: "Eat nice food",
-          value: true,
-        },{
-          title: "Solve interesting problem",
-          value: true,
-        }
-        ];
-        let bar = [{
-          title: "Eat nice food",
-          value: false,
-        },{
-          title: "Solve interesting problem",
-          value: false,
-        }
-        ];
-
-        for(var i=0; i<500; i++) {
-            var thisDate = new Date();
-            thisDate.setDate(now.getDate() - i);
-            const cond = (i/3 % 2 > 1) ^ (i / 7 % 2 > 1) ^ (i / 30 % 2 > 1);
-            if (i % 23 > 5) {
-              db.add('data', {date:thisDate, data: cond ? foo : bar});
-            }
-        }
-    }
 
     async function getDateRange(days) {
       let db = await dbPromise;
@@ -111,7 +106,6 @@
         for (const datum of data) {
           const title = datum.title;
           const value = datum.value;
-          console.log(value);
 
           if (!agg.hasOwnProperty(title)) {
             agg[title] = {count : 0, num_checked : 0};
@@ -156,7 +150,7 @@
         rtbl.appendChild(tr);
       }
     }
-
+    view();
   </script>
 </body>
 </html>
