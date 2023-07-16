@@ -8,7 +8,7 @@
   <title>Progress Tracker</title>
 </head>
 <body>
-  <div class="container">
+  <div class="d-flex justify-content-center">
     <table id="trackers">
       <tr>
         <td>Time with friends</td>
@@ -31,9 +31,18 @@
         <td><input type="checkbox"></td>
       </tr>
     </table>
+  </div>
 
+  <div class="d-flex justify-content-center">
     <button type="button" class="btn btn-primary" onclick="submit(); view()">submit</button>
+  </div>
 
+  <div class="d-flex justify-content-center">
+    <p id="last_entry">
+    </p>
+  </div>
+
+  <div class="d-flex justify-content-center">
     <table>
       <thead>
         <td>Activity</td>
@@ -124,6 +133,14 @@
       return result;
     }
 
+    async function last_submitted() {
+      let db = await dbPromise;
+      const tx = db.transaction('data', "readonly");
+      const index = tx.objectStore("data").index("by-date");
+      const c = await index.openCursor(null, 'prev');
+      return c.value.date.toDateString();
+    }
+
     async function view() {
       const week_result = await getDateRange(7);
       const month_result = await getDateRange(30);
@@ -149,6 +166,10 @@
 
         rtbl.appendChild(tr);
       }
+
+      const le = document.getElementById("last_entry");
+      const ls = await last_submitted();
+      le.textContent = `last submitted: ${ls}`;
     }
     view();
   </script>
