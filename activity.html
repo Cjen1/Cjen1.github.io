@@ -77,12 +77,11 @@
       }
 
       const date = new Date();
-      //date.setHours(date.getDate() - 10);
 
       const db = await dbPromise;
-      // remove all other from within 20 hours => approx 1 per day
+      // remove all other from within 12 hours => approx 1 per day
       const lower = new Date();
-      lower.setHours(date.getHours() - 20);
+      lower.setHours(date.getHours() - 12);
       let range = IDBKeyRange.bound(lower, date);
       const tx = db.transaction('data','readwrite');
       const index = tx.store.index("by-date");
